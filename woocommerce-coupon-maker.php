@@ -51,7 +51,7 @@ if ( ! class_exists('CouponMaker') ) {
 
             // Hooks
             add_action( 'init', array( $this, 'init' ), 0 );
-            add_action( 'widgets_init', array( $this, 'include_widgets' ) );
+            add_action( 'widgets_init', array( $this, 'includeWidgets' ) );
 
             do_action('woocommerce_coupon_maker_loaded');
         }
@@ -67,7 +67,7 @@ if ( ! class_exists('CouponMaker') ) {
          */
         public static function instance()
         {
-            if( empty(self::$_instance) or !self::$_instance instanceof CouponMaker ) {
+            if( empty(self::$_instance) || !self::$_instance instanceof CouponMaker ) {
                 self::$_instance = new CouponMaker();
             }
 
@@ -115,7 +115,7 @@ if ( ! class_exists('CouponMaker') ) {
         /**
          * Include coupon widgets
          */
-        public function include_widgets()
+        public function includeWidgets()
         {
             $directory_blog = get_site_option('woocommerce_coupon_maker_directory_blog_id');
             if(get_current_blog_id() === $directory_blog) {
@@ -135,6 +135,3 @@ function CouponMaker()
 {
     return CouponMaker::instance();
 }
-
-// Global for backwords campatibility
-$GLOBALS['couponMaker'] = CouponMaker();
