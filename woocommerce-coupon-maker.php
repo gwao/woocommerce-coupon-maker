@@ -17,6 +17,10 @@ if( ! defined( 'ABSPATH' )) {
     exit; // Exit if accessed directly
 }
 
+if( !defined( 'WC_COUPON_MAKER_PATH') ) {
+    define('WC_COUPON_MAKER_PATH', plugin_dir_path(__FILE__));
+}
+
 if ( ! class_exists('CouponMaker') ) {
 
     /**
@@ -53,6 +57,9 @@ if ( ! class_exists('CouponMaker') ) {
             add_action( 'init', array( $this, 'init' ), 0 );
             add_action( 'widgets_init', array( $this, 'includeWidgets' ) );
 
+            add_action( 'network_admin_menu', array( $this, 'networkAdminMenu') );
+            add_action( 'wpmuadminedit', __NAMESPACE__ . '\OptionsPage::init' );
+
             do_action('woocommerce_coupon_maker_loaded');
         }
 
@@ -83,7 +90,7 @@ if ( ! class_exists('CouponMaker') ) {
 
         public function autoload( $className )
         {
-            $className = ltrim($className, '\\' . __NAMESPACE__); // Force Limit Namespace
+            $className = ltrim($className, __NAMESPACE__); // Force Limit Namespace
             $className = ltrim($className, '\\');
             $fileName  = '';
             $namespace = '';
@@ -92,7 +99,7 @@ if ( ! class_exists('CouponMaker') ) {
                 $className = substr($className, $lastNsPos + 1);
                 $fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
             }
-            $fileName = 'includes' . DIRECTORY_SEPARATOR . $fileName;
+            $fileName = WC_COUPON_MAKER_PATH . 'includes' . DIRECTORY_SEPARATOR . $fileName;
             $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.class.php';
 
             if( file_exists($fileName) ) {
@@ -117,12 +124,22 @@ if ( ! class_exists('CouponMaker') ) {
          */
         public function includeWidgets()
         {
-            $directory_blog = get_site_option('woocommerce_coupon_maker_directory_blog_id');
+            $directory_blog = get_site_option('wc_coupon_maker_directory_blog_id');
             if(get_current_blog_id() === $directory_blog) {
                 // Register widget for directory blog
                 // TODO: Add widget
             }
         }
+
+        /**
+         * Add network admin menu
+         */
+
+        public function networkAdminMenu()
+        {
+            add_submenu_page('settings.php', 'Coupon Maker', 'Coupon Maker', 'manage_options', 'woocommerce-coupon-maker', __NAMESPACE__ . '\OptionsPage::page');
+        }
+
     }
 }
 
@@ -135,3 +152,5 @@ function CouponMaker()
 {
     return CouponMaker::instance();
 }
+
+CouponMaker();
