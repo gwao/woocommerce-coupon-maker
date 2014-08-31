@@ -125,9 +125,9 @@ if ( ! class_exists('CouponMaker') ) {
         public function includeWidgets()
         {
             $directory_blog = get_site_option('wc_coupon_maker_directory_blog_id');
-            if(get_current_blog_id() === $directory_blog) {
+            if(get_current_blog_id() === (int) $directory_blog) {
                 // Register widget for directory blog
-                // TODO: Add widget
+                register_widget( __NAMESPACE__ . '\MakerWidget' );
             }
         }
 
