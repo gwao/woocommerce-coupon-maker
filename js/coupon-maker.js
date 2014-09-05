@@ -30,10 +30,12 @@
                     data: formData,
                     dataType: 'json',
                     success: function (data, status) {
-                        $notifier.addClass('alert-success').text(data.message).removeClass('hidden');
+                        $notifier.addClass('alert-success').text(data.message).removeClass('hidden alert-danger');
                         $couponElements.prop("disabled", false);
                     },
                     error: function (xhr, status) {
+                        var data = xhr.responseJSON;
+                        $notifier.addClass('alert-danger').text(data.error).removeClass('hidden alert-success');
                         $couponElements.prop("disabled", false);
                     }
                 });
