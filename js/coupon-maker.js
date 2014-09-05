@@ -20,11 +20,10 @@
             $couponElements = $form.find(".form-control, .btn"),
             formData,
             handleCouponMaker = function (e) {
-                $couponElements.prop("disabled", true);
-
                 formData = serialArrayToHash($form.serializeArray());
                 formData.action = 'coupon_maker';
 
+                $couponElements.prop("disabled", true);
                 $.ajax({
                     type: 'POST',
                     url: couponMaker.ajaxURL,

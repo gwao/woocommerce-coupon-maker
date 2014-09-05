@@ -120,7 +120,7 @@ if ( ! class_exists('CouponMaker') ) {
             do_action('before_woocommerce_coupon_maker_init');
 
             add_action( 'wp_ajax_nopriv_coupon_maker', array($this, 'couponHandler') );
-            add_action( 'wp_ajax_coupon_maker', array($this, 'couponHandler') );
+            add_action( 'wp_ajax_coupon_maker', array(__NAMESPACE__ . '\CouponAjaxHandler', 'handle') );
 
             do_action('after_woocommerce_coupon_maker_init');
         }
@@ -148,21 +148,6 @@ if ( ! class_exists('CouponMaker') ) {
         public function networkAdminMenu()
         {
             add_submenu_page('settings.php', 'Coupon Maker', 'Coupon Maker', 'manage_options', 'woocommerce-coupon-maker', __NAMESPACE__ . '\OptionsPage::page');
-        }
-
-        /**
-         * Coupon Handler
-         *
-         * Handle ajax request to create coupon
-         */
-
-        public function couponHandler()
-        {
-            $result = new \StdClass;
-
-            $result->message = "Hello World";
-            echo json_encode($result);
-            die();
         }
 
     }
