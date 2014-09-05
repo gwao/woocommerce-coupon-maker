@@ -38,7 +38,7 @@ class OptionsPage
     {
 ?>
         <form action="settings.php" method="post">
-        <h2><?php echo __('Coupon Maker', 'wc-coupon-maker') ?></h2>
+        <h2><?php echo __('Coupon Maker', 'coupon-maker') ?></h2>
         <input name="wc_coupon_maker" type="hidden" value="1" />
 <?php
         wp_nonce_field( 'woocommerce-coupon-maker-options' );

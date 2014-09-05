@@ -1,0 +1,69 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce Coupon Maker\n"
+"POT-Creation-Date: 2014-09-05 18:51+0800\n"
+"PO-Revision-Date: 2014-09-05 19:06+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh_Hant\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.9\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: includes/CouponAjaxHandler.class.php:31
+msgid "Target store not active coupon service."
+msgstr "這個商店並沒有啟用優惠券功能。"
+
+#: includes/CouponAjaxHandler.class.php:34
+msgid "MOHO ID is necessary!"
+msgstr "必須輸入 MOHO ID。"
+
+#: includes/CouponAjaxHandler.class.php:37
+msgid "This moho user is not exists!"
+msgstr "這個 MOHO 帳號並不存在。"
+
+#: includes/CouponAjaxHandler.class.php:40
+msgid "You already apply a coupon!"
+msgstr "你已經申請了優惠券！"
+
+#: includes/CouponAjaxHandler.class.php:52
+#, php-format
+msgid "Your coupon code is %s"
+msgstr "你的優惠卷代碼是 %s"
+
+#: includes/DirectoryStoreMetaBox.class.php:20
+#: includes/OptionsPage.class.php:41
+msgid "Coupon Maker"
+msgstr "優惠券生成器"
+
+#: includes/DirectoryStoreMetaBox.class.php:41
+msgid "Store ID"
+msgstr "商店 ID"
+
+#: includes/DirectoryStoreMetaBox.class.php:49
+msgid "Discount"
+msgstr "折扣比例"
+
+#: includes/DirectoryStoreMetaBox.class.php:57
+msgid "Minimun Amount"
+msgstr "最小消費金額"
+
+#: includes/MakerWidget.class.php:60
+msgid "Apply"
+msgstr "申請"
+
+#: includes/MakerWidget.class.php:98
+msgid "Title: "
+msgstr "標題："
+
+#: includes/OptionsPage.class.php:48
+msgid "Directory Blog ID"
+msgstr "申請網誌 ID"

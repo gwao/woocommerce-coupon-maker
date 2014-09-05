@@ -38,7 +38,7 @@ class DirectoryStoreMetaBox
 ?>
         <table>
             <tr>
-                <th><label for="store_id"><?php echo _('Store ID') ?></label></th>
+                <th><label for="store_id"><?php echo _('Store ID', 'woocommerce_coupon_maker') ?></label></th>
                 <td>
                     <div class="form-group">
                         <input type="number" name="store_id" class="form-control" value="<?php echo esc_attr($storeID); ?>" />
@@ -46,7 +46,7 @@ class DirectoryStoreMetaBox
                 </td>
             </tr>
             <tr>
-                <th><label for="discount_percent"><?php echo _('Discount') ?> (%)</label></th>
+                <th><label for="discount_percent"><?php echo _('Discount', 'woocommerce_coupon_maker') ?> (%)</label></th>
                 <td>
                     <div class="form-group">
                         <input type="number" name="discount_percent" class="form-control" value="<?php echo esc_attr($discount); ?>" />
@@ -54,7 +54,7 @@ class DirectoryStoreMetaBox
                 </td>
             </tr>
             <tr>
-                <th><label for="minimum_amount"><?php echo _('Minimun Amount') ?></label></th>
+                <th><label for="minimum_amount"><?php echo _('Minimun Amount', 'woocommerce_coupon_maker') ?></label></th>
                 <td>
                     <div class="form-group">
                         <input type="number" name="minimum_amount" class="form-control" value="<?php echo esc_attr($minimumAmount); ?>" />

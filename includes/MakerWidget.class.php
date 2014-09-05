@@ -35,7 +35,7 @@ class MakerWidget extends \WP_Widget
             return;
         }
 
-        if( !$this->validate_post_type($post) ) {
+        if( !$this->validatePostType($post) ) {
             return; // If not valid, just return
         }
 
@@ -57,7 +57,7 @@ class MakerWidget extends \WP_Widget
                     <input type="number" class="form-control" name="moho_id" placeholder="MOHO ID" />
                 </div>
                 <input type="hidden" name="post_id" value="<?php the_ID();  ?>" />
-                <button type="submit" class="btn btn-primary">Apply</button>
+                <button type="submit" class="btn btn-primary"><?php _e('Apply', 'woocommerce_coupon_maker'); ?></button>
             </div>
         </form>
 <?php
@@ -110,7 +110,7 @@ class MakerWidget extends \WP_Widget
      * @return bool
      */
 
-    public function validate_post_type($post)
+    public function validatePostType($post)
     {
         // NOTE: Current force lock to our directory theme post type
         return ($post->post_type == 'item');

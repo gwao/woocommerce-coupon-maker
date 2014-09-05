@@ -28,16 +28,16 @@ class CouponAjaxHandler
 
         if( !CouponMaker::isWooCommerceActive($storeID) ) {
             http_response_code(404);
-            $result->error = __("Target store not active coupon service.");
+            $result->error = __("Target store not active coupon service.", "woocommerce_coupon_maker");
         } elseif( is_null($requestData->mohoID) ) {
             http_response_code(404);
-            $result->error = __("MOHO ID is necessary!");
+            $result->error = __("MOHO ID is necessary!", "woocommerce_coupon_maker");
         } elseif ( !CouponAjaxHandler::verifyMohoID( $requestData->mohoID ) ) {
             http_response_code(404);
-            $result->error = __("This moho user is not exists!");
+            $result->error = __("This moho user is not exists!", "woocommerce_coupon_maker");
         } elseif( CouponAjaxHandler::verifyFreeCouponExists( $storeID, $requestData->mohoID) ) {
             http_response_code(403);
-            $result->error = __("You already apply a coupon!");
+            $result->error = __("You already apply a coupon!", "woocommerce_coupon_maker");
         } else {
 
             $options = array(
@@ -49,7 +49,7 @@ class CouponAjaxHandler
             $couponCode = self::FREE_COUPON_PREFIX . $requestData->mohoID;
             $newCoupon = CouponAjaxHandler::createCoupon( $storeID, $requestData->mohoID, $couponCode, $discount, 'percent', $options);
 
-            $message = sprintf( __('Your coupon code is %s'), $couponCode );
+            $message = sprintf( __('Your coupon code is %s', 'woocommerce_coupon_maker'), $couponCode );
             $result->message = $message;
         }
         echo json_encode($result);

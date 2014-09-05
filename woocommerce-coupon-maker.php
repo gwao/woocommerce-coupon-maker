@@ -6,6 +6,7 @@
  * Version: 1.0
  * Author URI: http://frost.tw/
  * Network: true
+ * Text Domain: woocommerce-coupon-maker
  *
  * @package Coupon_Maker
  * @version 1.0
@@ -63,6 +64,8 @@ if ( ! class_exists('CouponMaker') ) {
 
             add_action( 'network_admin_menu', array( $this, 'networkAdminMenu') );
             add_action( 'wpmuadminedit', __NAMESPACE__ . '\OptionsPage::init' );
+
+            add_action( 'plugins_loaded', array( $this, 'loadTextdomain' ) );
 
             do_action('woocommerce_coupon_maker_loaded');
         }
@@ -168,6 +171,17 @@ if ( ! class_exists('CouponMaker') ) {
             $activePlugins = get_blog_option($blogID, 'active_plugins');
             if( !$activePlugins ) { return false; }
             return in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins',  $activePlugins) );
+        }
+
+        /**
+         * Load Textdomain
+         *
+         * Load plugin's languages package.
+         */
+
+        public function loadTextdomain()
+        {
+            load_plugin_textdomain( 'woocommerce_coupon_maker', false, dirname( plugin_basename(__FILE__) ) . '/languages/' );
         }
 
     }
