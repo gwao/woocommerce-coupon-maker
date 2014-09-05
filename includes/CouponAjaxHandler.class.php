@@ -8,7 +8,9 @@ namespace MOHO;
 
 class CouponAjaxHandler
 {
-    const MOHO_API_ENDPOINT = "http://magic-bonus.com/api/v3";
+    const MOHO_API_ENDPOINT = "https://magic-bonus.com/api/v3";
+    const FREE_COUPON_PREFIX = "MOHO_";
+
     /**
      * Handle
      *
@@ -26,10 +28,16 @@ class CouponAjaxHandler
 
         if( !CouponMaker::isWooCommerceActive($storeID) ) {
             http_response_code(404);
-            $result->error = __("Target store not active coupon service");
+            $result->error = __("Target store not active coupon service.");
         } elseif( is_null($requestData->mohoID) ) {
             http_response_code(404);
             $result->error = __("MOHO ID is necessary!");
+        } elseif ( !CouponAjaxHandler::verifyMohoID( $requestData->mohoID ) ) {
+            http_response_code(404);
+            $result->error = __("This moho user is not exists!");
+        } elseif( CouponAjaxHandler::verifyFreeCouponExists( $storeID, $requestData->mohoID) ) {
+            http_response_code(403);
+            $result->error = __("You already apply a coupon!");
         } else {
 
             $options = array(
@@ -38,10 +46,10 @@ class CouponAjaxHandler
             );
 
             // Generate Random Coupon for test
-            $couponCode = strtoupper(uniqid());
+            $couponCode = self::FREE_COUPON_PREFIX . $requestData->mohoID;
             $newCoupon = CouponAjaxHandler::createCoupon( $storeID, $requestData->mohoID, $couponCode, $discount, 'percent', $options);
 
-            $message = "Coupon For: {$requestData->mohoID}, Code: {$newCoupon->post_title}, Discount: {$discount}, Minimum Amount: {$minimumAmount}";
+            $message = sprintf( __('Your coupon code is %s'), $couponCode );
             $result->message = $message;
         }
         echo json_encode($result);
@@ -116,6 +124,46 @@ class CouponAjaxHandler
         restore_current_blog();
 
         return $coupon;
+    }
+
+    /**
+     * Verify MOHO ID
+     *
+     * Check mono user id is exists or not
+     *
+     * @param int $mohoID
+     * @return bool
+     */
+    public static function verifyMohoID( $mohoID )
+    {
+        $response = file_get_contents( self::MOHO_API_ENDPOINT . '/user/public/' . $mohoID );
+        $data = json_decode($response);
+
+        if( !isset($data->error) ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Verify Free Coupon Exists
+     *
+     * Check system is have this coupon or not.
+     *
+     * @param int $storeID
+     * @param int $mohoID
+     * @return bool
+     */
+    public static function verifyFreeCouponExists( $storeID, $mohoID )
+    {
+        $couponCode = self::FREE_COUPON_PREFIX . $mohoID;
+
+        switch_to_blog($storeID);
+        $coupon = get_page_by_title( $couponCode, OBJECT, 'shop_coupon' );
+        restore_current_blog();
+
+        return !is_null($coupon);
     }
 }
 
