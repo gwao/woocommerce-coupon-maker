@@ -28,6 +28,12 @@ class MakerWidget extends \WP_Widget
     {
         $title = apply_filters( 'widget_title', $instance['title'] );
         $post = get_post();
+        $storeID = (int) get_post_meta( $post->ID, 'wc_coupon_maker_store_id');
+        $storeID = $storeID ?: -1;
+
+        if( !CouponMaker::isWooCommerceActive( $storeID) ) {
+            return;
+        }
 
         if( !$this->validate_post_type($post) ) {
             return; // If not valid, just return

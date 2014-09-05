@@ -135,6 +135,10 @@ if ( ! class_exists('CouponMaker') ) {
                 // Register widget for directory blog
                 register_widget( __NAMESPACE__ . '\MakerWidget' );
 
+                // Register Metabox
+                add_action( 'add_meta_boxes', array(__NAMESPACE__ . '\DirectoryStoreMetaBox', 'registerMetaBox') );
+                add_action( 'save_post', array(__NAMESPACE__ . '\DirectoryStoreMetaBox', 'savePostHandler') );
+
                 // Register Widget Scripts
                 wp_enqueue_script( 'coupon-maker', WC_COUPON_MAKER_URL . '/js/coupon-maker.js', array('jquery') );
                 wp_localize_script( 'coupon-maker', 'couponMaker', array( 'ajaxURL' => admin_url( 'admin-ajax.php' ) ) );
@@ -148,6 +152,22 @@ if ( ! class_exists('CouponMaker') ) {
         public function networkAdminMenu()
         {
             add_submenu_page('settings.php', 'Coupon Maker', 'Coupon Maker', 'manage_options', 'woocommerce-coupon-maker', __NAMESPACE__ . '\OptionsPage::page');
+        }
+
+        /**
+         * Check WooCommerce Active
+         *
+         * Check blog is active woocommerce or not
+         *
+         * @param int $blogID
+         * @return bool
+         */
+
+        public static function isWooCommerceActive( $blogID )
+        {
+            $activePlugins = get_blog_option($blogID, 'active_plugins');
+            if( !$activePlugins ) { return false; }
+            return in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins',  $activePlugins) );
         }
 
     }
