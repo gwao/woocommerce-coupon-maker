@@ -33,13 +33,31 @@ class DirectoryStoreMetaBox
         wp_nonce_field( 'coupon_maker', 'coupon_maker_nonce' );
 
         $storeID = get_post_meta( $post->ID, 'wc_coupon_maker_store_id', true );
+        $discount = get_post_meta( $post->ID, 'wc_coupon_maker_discount', true );
+        $minimumAmount = get_post_meta( $post->ID, 'wc_coupon_maker_minimum_amount', true );
 ?>
-        <table class="form-table">
+        <table>
             <tr>
-                <td><label for="store_id"> <?php echo _('Store ID') ?></label></th>
+                <th><label for="store_id"><?php echo _('Store ID') ?></label></th>
                 <td>
                     <div class="form-group">
                         <input type="number" name="store_id" class="form-control" value="<?php echo esc_attr($storeID); ?>" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="discount_percent"><?php echo _('Discount') ?> (%)</label></th>
+                <td>
+                    <div class="form-group">
+                        <input type="number" name="discount_percent" class="form-control" value="<?php echo esc_attr($discount); ?>" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="minimum_amount"><?php echo _('Minimun Amount') ?></label></th>
+                <td>
+                    <div class="form-group">
+                        <input type="number" name="minimum_amount" class="form-control" value="<?php echo esc_attr($minimumAmount); ?>" />
                     </div>
                 </td>
             </tr>
@@ -62,6 +80,8 @@ class DirectoryStoreMetaBox
         if( !isset($_POST['store_id']) ) { return; }
 
         $blogID = (int) $_POST['store_id'];
+        $discount = (float) $_POST['discount_percent'];
+        $minimumAmount = (float) $_POST['minimum_amount'];
         if( $blogID == -1 ) { // Clear Store Setting
             update_post_meta( $postID, 'wc_coupon_maker_store_id', null);
             return;
@@ -71,6 +91,12 @@ class DirectoryStoreMetaBox
         if( CouponMaker::isWooCommerceActive( $blogID) ) {
             // Save Setting
             update_post_meta( $postID, 'wc_coupon_maker_store_id', $blogID );
+            if( $discount > 0 && $discount <= 100) {
+                update_post_meta( $postID, 'wc_coupon_maker_discount', $discount );
+            }
+            if( $minimumAmount >= 0 ) {
+                update_post_meta( $postID, 'wc_coupon_maker_minimum_amount', $minimumAmount );
+            }
         }
     }
 }
