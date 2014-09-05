@@ -17,6 +17,10 @@ if( ! defined( 'ABSPATH' )) {
     exit; // Exit if accessed directly
 }
 
+if( !defined('WC_COUPON_MAKER_URL') ) {
+    define('WC_COUPON_MAKER_URL', plugin_dir_url(__FILE__));
+}
+
 if( !defined( 'WC_COUPON_MAKER_PATH') ) {
     define('WC_COUPON_MAKER_PATH', plugin_dir_path(__FILE__));
 }
@@ -114,7 +118,9 @@ if ( ! class_exists('CouponMaker') ) {
         public function init()
         {
             do_action('before_woocommerce_coupon_maker_init');
-            // TODO: Add some initialize code
+
+            add_action( 'wp_ajax_nopriv_coupon_maker', array($this, 'couponHandler') );
+            add_action( 'wp_ajax_coupon_maker', array($this, 'couponHandler') );
 
             do_action('after_woocommerce_coupon_maker_init');
         }
@@ -128,6 +134,10 @@ if ( ! class_exists('CouponMaker') ) {
             if(get_current_blog_id() === (int) $directory_blog) {
                 // Register widget for directory blog
                 register_widget( __NAMESPACE__ . '\MakerWidget' );
+
+                // Register Widget Scripts
+                wp_enqueue_script( 'coupon-maker', WC_COUPON_MAKER_URL . '/js/coupon-maker.js', array('jquery') );
+                wp_localize_script( 'coupon-maker', 'couponMaker', array( 'ajaxURL' => admin_url( 'admin-ajax.php' ) ) );
             }
         }
 
@@ -138,6 +148,21 @@ if ( ! class_exists('CouponMaker') ) {
         public function networkAdminMenu()
         {
             add_submenu_page('settings.php', 'Coupon Maker', 'Coupon Maker', 'manage_options', 'woocommerce-coupon-maker', __NAMESPACE__ . '\OptionsPage::page');
+        }
+
+        /**
+         * Coupon Handler
+         *
+         * Handle ajax request to create coupon
+         */
+
+        public function couponHandler()
+        {
+            $result = new \StdClass;
+
+            $result->message = "Hello World";
+            echo json_encode($result);
+            die();
         }
 
     }
