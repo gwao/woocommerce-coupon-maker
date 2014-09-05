@@ -29,6 +29,9 @@ class CouponAjaxHandler
         if( !CouponMaker::isWooCommerceActive($storeID) ) {
             http_response_code(404);
             $result->error = __("Target store not active coupon service.", "woocommerce_coupon_maker");
+        } elseif( !CouponMaker::isWooCommerceActive(get_current_blog_id()) ) {
+            http_response_code(404);
+            $result->error = __("Something wrong, please contact admin.", "woocommerce_coupon_maker");
         } elseif( is_null($requestData->mohoID) ) {
             http_response_code(404);
             $result->error = __("MOHO ID is necessary!", "woocommerce_coupon_maker");
@@ -52,8 +55,7 @@ class CouponAjaxHandler
             $message = sprintf( __('Your coupon code is %s', 'woocommerce_coupon_maker'), $couponCode );
             $result->message = $message;
         }
-        echo json_encode($result);
-        die();
+       wp_send_json($result);
     }
 
     /**

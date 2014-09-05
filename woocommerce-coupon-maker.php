@@ -122,8 +122,8 @@ if ( ! class_exists('CouponMaker') ) {
         {
             do_action('before_woocommerce_coupon_maker_init');
 
-            add_action( 'wp_ajax_nopriv_coupon_maker', array($this, 'couponHandler') );
-            add_action( 'wp_ajax_coupon_maker', array(__NAMESPACE__ . '\CouponAjaxHandler', 'handle') );
+            add_action( 'wp_ajax_nopriv_coupon_maker', array(__NAMESPACE__ . '\CouponAjaxHandler', 'handle'), 100 );
+            add_action( 'wp_ajax_coupon_maker', array(__NAMESPACE__ . '\CouponAjaxHandler', 'handle'), 100 );
 
             do_action('after_woocommerce_coupon_maker_init');
         }
@@ -158,6 +158,17 @@ if ( ! class_exists('CouponMaker') ) {
         }
 
         /**
+         * Load Textdomain
+         *
+         * Load plugin's languages package.
+         */
+
+        public function loadTextdomain()
+        {
+            load_plugin_textdomain( 'woocommerce_coupon_maker', false, dirname( plugin_basename(__FILE__) ) . '/languages/' );
+        }
+
+        /**
          * Check WooCommerce Active
          *
          * Check blog is active woocommerce or not
@@ -171,17 +182,6 @@ if ( ! class_exists('CouponMaker') ) {
             $activePlugins = get_blog_option($blogID, 'active_plugins');
             if( !$activePlugins ) { return false; }
             return in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins',  $activePlugins) );
-        }
-
-        /**
-         * Load Textdomain
-         *
-         * Load plugin's languages package.
-         */
-
-        public function loadTextdomain()
-        {
-            load_plugin_textdomain( 'woocommerce_coupon_maker', false, dirname( plugin_basename(__FILE__) ) . '/languages/' );
         }
 
     }
